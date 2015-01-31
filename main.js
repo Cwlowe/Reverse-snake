@@ -24,6 +24,7 @@ var pellet = new Sprite();
 world.addChild(snake);
 world.addChild(food);
 world.addChild(pellet);
+
 gInput.addBool(65,"left");
 gInput.addBool(68,"right");
 gInput.addBool(83,"down");
@@ -39,11 +40,9 @@ function checkEatten(sprite,sprite2){
 	var PmaxX = sprite2.x + sprite2.width;
 	var PminY = sprite2.y;
 	var PmaxY = sprite2.y + sprite2.height;
-	alert("yup");
-	if(SminX >= PminX && SmaxX <= PmaxX && SminY >= PminY && SmaxY <= PmaxY){
-		alert("checked");
+	
+	if( ((SminX <= PmaxX && SminX >= PminX) || (SmaxX >= PminX && SmaxX <= PmaxX)) && ((SminY<=PmaxY && SminY >= PminY) || (SmaxY >= PminY && SmaxY <= PmaxY))){
 		return true;
-		
 	}
 	return false;
 }
@@ -63,10 +62,18 @@ snake.update = function(d){
 		this.y -= move;
 	}
 	
+	if(checkEatten(this,pellet)){
+		console.log("I dont git this");
+		world.removeChild(pellet);
+		pellet.y = Math.random()*(450-230)+230;
+		pellet.x = Math.random()*(900-200)+200;
+		world.addChild(pellet);
+	}
+	
 };
 
 food.update = function(d){
-	var move = 3;
+	var move = 2;
 	if(snake.x > food.x){
 		this.x += move;
 	}
@@ -79,13 +86,10 @@ food.update = function(d){
 	if(snake.x < food.x){
 		this.x -= move;
 	}
-	
-};
-
-pellet.update = function(d){
-	if(checkEatten(snake,pellet)){
-		alert("this is true");
+	if(checkEatten(this,pellet)){
 		world.removeChild(pellet);
+		pellet.y = Math.random()*(450-230)+230;
+		pellet.x = Math.random()*(900-200)+200;
 		world.addChild(pellet);
 	}
 };
