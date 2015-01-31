@@ -28,7 +28,25 @@ gInput.addBool(65,"left");
 gInput.addBool(68,"right");
 gInput.addBool(83,"down");
 gInput.addBool(87,"up");
-setInterval(function(){world.add(food);},2000);
+
+function checkEatten(sprite,sprite2){
+	var SminX = sprite.x;
+	var SmaxX = sprite.x + sprite.width;
+	var SminY = sprite.y;
+	var SmaxY = sprite.y + sprite.height;
+	
+	var PminX = sprite2.x;
+	var PmaxX = sprite2.x + sprite2.width;
+	var PminY = sprite2.y;
+	var PmaxY = sprite2.y + sprite2.height;
+	alert("yup");
+	if(SminX >= PminX && SmaxX <= PmaxX && SminY >= PminY && SmaxY <= PmaxY){
+		alert("checked");
+		return true;
+		
+	}
+	return false;
+}
 
 snake.update = function(d){
 	var move = 5;
@@ -48,7 +66,7 @@ snake.update = function(d){
 };
 
 food.update = function(d){
-	var move = 2;
+	var move = 3;
 	if(snake.x > food.x){
 		this.x += move;
 	}
@@ -62,6 +80,14 @@ food.update = function(d){
 		this.x -= move;
 	}
 	
+};
+
+pellet.update = function(d){
+	if(checkEatten(snake,pellet)){
+		alert("this is true");
+		world.removeChild(pellet);
+		world.addChild(pellet);
+	}
 };
 
 
